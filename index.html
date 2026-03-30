@@ -1,0 +1,330 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.page{padding:1.5rem 0}
+.hero{text-align:center;padding:2rem 0 1.5rem;border-bottom:0.5px solid var(--color-border-tertiary)}
+.hero-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--color-text-tertiary);margin-bottom:8px}
+.hero-title{font-size:26px;font-weight:500;color:var(--color-text-primary);line-height:1.25;margin-bottom:6px}
+.hero-sub{font-size:13px;color:var(--color-text-secondary);max-width:560px;margin:0 auto 1rem}
+.hero-authors{font-size:12px;color:var(--color-text-tertiary)}
+.metrics-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:1.5rem 0}
+.m-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:1rem;text-align:center}
+.m-num{font-size:26px;font-weight:500;color:var(--color-text-primary);line-height:1}
+.m-label{font-size:12px;color:var(--color-text-secondary);margin-top:4px}
+.section{margin:2rem 0}
+.sec-title{font-size:15px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px}
+.sec-sub{font-size:12px;color:var(--color-text-secondary);margin-bottom:1rem}
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.chart-box{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem}
+.chart-label{font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:12px}
+.bar-group{margin-bottom:10px}
+.bar-name{font-size:11px;color:var(--color-text-secondary);margin-bottom:3px;display:flex;justify-content:space-between}
+.bar-track{background:var(--color-background-secondary);border-radius:3px;height:8px;overflow:hidden;position:relative}
+.bar-fill{height:8px;border-radius:3px;transition:width 0.8s cubic-bezier(0.4,0,0.2,1)}
+.bar-val{font-size:11px;font-weight:500;color:var(--color-text-primary)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--color-text-secondary)}
+.leg-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.tabs{display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap}
+.tab{font-size:12px;padding:5px 12px;border-radius:20px;cursor:pointer;border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary);background:transparent;transition:all 0.15s}
+.tab.active{background:var(--color-background-info);color:var(--color-text-info);border-color:transparent}
+.pipeline-wrap{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding-bottom:4px}
+.pipe-node{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 12px;min-width:100px;flex-shrink:0;cursor:pointer;transition:border-color 0.15s}
+.pipe-node:hover{border-color:var(--color-border-primary)}
+.pipe-node.active{border-color:var(--color-border-info);background:var(--color-background-info)}
+.pipe-node .pn-icon{font-size:16px;margin-bottom:4px}
+.pipe-node .pn-name{font-size:11px;font-weight:500;color:var(--color-text-primary)}
+.pipe-node .pn-sub{font-size:10px;color:var(--color-text-secondary);margin-top:2px}
+.pipe-node.active .pn-name,.pipe-node.active .pn-sub{color:var(--color-text-info)}
+.pipe-arrow{display:flex;align-items:center;padding:0 4px;color:var(--color-text-tertiary);font-size:14px;flex-shrink:0}
+.detail-box{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:1rem;margin-top:12px;font-size:13px;color:var(--color-text-secondary);line-height:1.6;min-height:60px}
+.detail-box strong{color:var(--color-text-primary);font-weight:500}
+.rag-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rag-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem}
+.rag-head{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.rag-badge{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:500}
+.rag-badge.text{background:var(--color-background-info);color:var(--color-text-info)}
+.rag-badge.image{background:var(--color-background-warning);color:var(--color-text-warning)}
+.rag-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:12px}
+.rag-row:last-child{border:none}
+.rag-key{color:var(--color-text-secondary)}
+.rag-val{font-weight:500;color:var(--color-text-primary)}
+.rag-val.good{color:var(--color-text-success)}
+.rag-val.warn{color:var(--color-text-warning)}
+.finding-list{display:flex;flex-direction:column;gap:10px}
+.finding{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-left:3px solid;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:10px 14px;cursor:pointer;transition:background 0.15s}
+.finding:hover{background:var(--color-background-secondary)}
+.finding-title{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px}
+.finding-desc{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+.qtype-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px}
+.qtype{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:12px;text-align:center}
+.qtype-icon{font-size:20px;margin-bottom:6px}
+.qtype-name{font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px}
+.qtype-desc{font-size:11px;color:var(--color-text-secondary)}
+.recall-toggle{display:flex;gap:4px;margin-bottom:10px}
+.rt-btn{font-size:11px;padding:4px 10px;border-radius:4px;cursor:pointer;border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary);background:transparent}
+.rt-btn.on{background:var(--color-text-primary);color:var(--color-background-primary);border-color:transparent}
+.divider{border:none;border-top:0.5px solid var(--color-border-tertiary);margin:1.5rem 0}
+</style>
+
+<div class="page">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-label">arXiv · 2602.17687 · February 2026</div>
+  <div class="hero-title">IRPAPERS: A Visual Document Benchmark<br>for Scientific Retrieval and Question Answering</div>
+  <div class="hero-sub">How do image-based retrieval systems compare to established text-based methods on scientific PDF pages?</div>
+  <div class="hero-authors">Shorten · Skaburskas · Jones · Pierse · Esposito · Trengrove · Dilocker · van Luijt &nbsp;·&nbsp; Weaviate</div>
+</div>
+
+<!-- KEY NUMBERS -->
+<div class="metrics-row">
+  <div class="m-card"><div class="m-num" style="color:#185FA5">166</div><div class="m-label">IR papers</div></div>
+  <div class="m-card"><div class="m-num" style="color:#185FA5">3,230</div><div class="m-label">pages (image + OCR)</div></div>
+  <div class="m-card"><div class="m-num" style="color:#185FA5">180</div><div class="m-label">needle-in-haystack questions</div></div>
+  <div class="m-card"><div class="m-num" style="color:#0F6E56">49%</div><div class="m-label">best Recall@1 (multimodal)</div></div>
+</div>
+
+<hr class="divider">
+
+<!-- RETRIEVAL CHART -->
+<div class="section">
+  <div class="sec-title">Retrieval recall by system and depth</div>
+  <div class="sec-sub">Click a @k level to compare all systems at that retrieval depth</div>
+  <div class="recall-toggle" id="k-toggle">
+    <button class="rt-btn on" onclick="setK(0,this)">Recall@1</button>
+    <button class="rt-btn" onclick="setK(1,this)">Recall@5</button>
+    <button class="rt-btn" onclick="setK(2,this)">Recall@20</button>
+  </div>
+  <div class="chart-box">
+    <div class="chart-label" id="recall-label">Recall@1 — top-1 retrieval accuracy</div>
+    <div id="recall-bars"></div>
+    <div class="legend" style="margin-top:14px">
+      <div class="leg-item"><div class="leg-dot" style="background:#185FA5"></div>Text-based</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#BA7517"></div>Image-based</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#0F6E56"></div>Multimodal / combined</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#A32D2D"></div>Baselines</div>
+    </div>
+  </div>
+</div>
+
+<!-- PIPELINE -->
+<div class="section">
+  <div class="sec-title">Experimental pipeline</div>
+  <div class="sec-sub">Click any stage to learn what it does</div>
+  <div class="pipeline-wrap" id="pipeline-wrap"></div>
+  <div class="detail-box" id="pipeline-detail">Select a stage above to see details.</div>
+</div>
+
+<hr class="divider">
+
+<!-- RAG COMPARISON -->
+<div class="section">
+  <div class="sec-title">RAG system comparison — question answering accuracy</div>
+  <div class="sec-sub">TextRAG (hybrid text) vs ImageRAG (ColModernVBERT + GPT-4.1) at k=1 and k=5</div>
+  <div class="rag-grid">
+    <div class="rag-card">
+      <div class="rag-head">TextRAG <span class="rag-badge text">OCR + hybrid</span></div>
+      <div class="rag-row"><span class="rag-key">k = 1 accuracy</span><span class="rag-val good">0.62</span></div>
+      <div class="rag-row"><span class="rag-key">k = 5 accuracy</span><span class="rag-val good">0.82</span></div>
+      <div class="rag-row"><span class="rag-key">Oracle (gold page)</span><span class="rag-val">0.74</span></div>
+      <div class="rag-row"><span class="rag-key">Hard negative</span><span class="rag-val warn">lower</span></div>
+      <div class="rag-row"><span class="rag-key">No retrieval baseline</span><span class="rag-val warn">0.16</span></div>
+    </div>
+    <div class="rag-card">
+      <div class="rag-head">ImageRAG <span class="rag-badge image">ColModernVBERT + GPT-4.1</span></div>
+      <div class="rag-row"><span class="rag-key">k = 1 accuracy</span><span class="rag-val warn">0.40</span></div>
+      <div class="rag-row"><span class="rag-key">k = 5 accuracy</span><span class="rag-val warn">0.71</span></div>
+      <div class="rag-row"><span class="rag-key">Oracle (gold image)</span><span class="rag-val">0.68</span></div>
+      <div class="rag-row"><span class="rag-key">Hard negative</span><span class="rag-val warn">lower</span></div>
+      <div class="rag-row"><span class="rag-key">Reader</span><span class="rag-val">GPT-4.1 (vision)</span></div>
+    </div>
+  </div>
+  <div class="detail-box" style="margin-top:12px;border-left:3px solid var(--color-border-success)">
+    <strong>Key insight:</strong> At k=5, both systems exceed oracle single-document retrieval (TextRAG 0.82 &gt; 0.74, ImageRAG 0.71 &gt; 0.68) — confirming that scientific QA often requires synthesising evidence across multiple pages, not just finding one definitive source.
+  </div>
+</div>
+
+<!-- QUESTION TYPES -->
+<div class="section">
+  <div class="sec-title">Benchmark question categories</div>
+  <div class="sec-sub">180 needle-in-the-haystack questions span three reasoning types</div>
+  <div class="qtype-row">
+    <div class="qtype">
+      <div class="qtype-icon">🔎</div>
+      <div class="qtype-name">Information extraction</div>
+      <div class="qtype-desc">Precise methodological details and factual lookups from paper text</div>
+    </div>
+    <div class="qtype">
+      <div class="qtype-icon">🔢</div>
+      <div class="qtype-name">Numerical reasoning</div>
+      <div class="qtype-desc">Calculations and comparisons using numbers from tables or figures</div>
+    </div>
+    <div class="qtype">
+      <div class="qtype-icon">🧩</div>
+      <div class="qtype-name">Logical reasoning</div>
+      <div class="qtype-desc">Multi-step inference across sections — cannot be answered from memory alone</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- KEY FINDINGS -->
+<div class="section">
+  <div class="sec-title">Key findings</div>
+  <div class="sec-sub">Click any finding to explore further</div>
+  <div class="finding-list" id="findings"></div>
+</div>
+
+<!-- CLOSED-SOURCE COMPARISON -->
+<div class="section">
+  <div class="sec-title">Open-source vs closed-source image retrieval</div>
+  <div class="sec-sub">Cohere Embed v4.0 and Voyage 3 Large vs open-source ColModernVBERT</div>
+  <div class="chart-box">
+    <div class="chart-label">Recall@1 — image embedding comparison</div>
+    <div id="closed-bars"></div>
+  </div>
+</div>
+
+<!-- MUVERA EFFICIENCY -->
+<div class="section">
+  <div class="sec-title">MUVERA encoding — efficiency vs quality tradeoff</div>
+  <div class="sec-sub">MUVERA compresses multi-vector image embeddings into single fixed-size vectors for faster HNSW search</div>
+  <div class="chart-box">
+    <div class="chart-label">Recall@1 vs MUVERA compression level</div>
+    <div id="muvera-bars"></div>
+    <div class="detail-box" style="margin-top:12px;border-left:3px solid var(--color-border-tertiary)">
+      <strong>Trade-off:</strong> MUVERA trades retrieval quality for efficiency — higher compression = faster search but lower recall. The full multi-vector ColModernVBERT achieves best recall but requires MUVERA or similar to scale to large corpora.
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const RECALL_DATA = {
+  systems: [
+    {name:'Arctic 2.0 (dense text)',       vals:[0.37,0.72,0.89], color:'#185FA5', group:'text'},
+    {name:'BM25 (sparse text)',             vals:[0.34,0.67,0.85], color:'#185FA5', group:'text'},
+    {name:'Hybrid text (Arctic + BM25)',    vals:[0.46,0.78,0.91], color:'#185FA5', group:'text'},
+    {name:'ColModernVBERT (image)',         vals:[0.43,0.78,0.93], color:'#BA7517', group:'image'},
+    {name:'Multimodal hybrid',              vals:[0.49,0.81,0.95], color:'#0F6E56', group:'modal'},
+    {name:'No retrieval baseline',          vals:[0.16,0.16,0.16], color:'#A32D2D', group:'base'},
+  ],
+  labels:['Recall@1','Recall@5','Recall@20']
+};
+
+let kIdx = 0;
+
+function setK(i, btn) {
+  kIdx = i;
+  document.querySelectorAll('#k-toggle .rt-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('recall-label').textContent = RECALL_DATA.labels[i] + ' — ' +
+    (i===0?'top-1 retrieval accuracy':i===1?'top-5 retrieval accuracy':'top-20 retrieval accuracy');
+  renderRecall();
+}
+
+function makeBar(name, val, color, maxVal) {
+  const pct = Math.round(val*100);
+  const w = Math.round((val/maxVal)*100);
+  return `<div class="bar-group">
+    <div class="bar-name"><span>${name}</span><span class="bar-val">${pct}%</span></div>
+    <div class="bar-track"><div class="bar-fill" style="width:0%;background:${color}" data-w="${w}"></div></div>
+  </div>`;
+}
+
+function renderRecall() {
+  const container = document.getElementById('recall-bars');
+  const maxVal = Math.max(...RECALL_DATA.systems.map(s=>s.vals[kIdx]));
+  container.innerHTML = RECALL_DATA.systems.map(s=>makeBar(s.name,s.vals[kIdx],s.color,maxVal)).join('');
+  setTimeout(()=>{
+    container.querySelectorAll('.bar-fill').forEach(el=>{
+      el.style.width = el.dataset.w+'%';
+    });
+  },50);
+}
+
+const CLOSED_DATA = [
+  {name:'ColModernVBERT (open-source)', val:0.43, color:'#BA7517'},
+  {name:'Cohere Embed v4.0',            val:0.52, color:'#533AB7'},
+  {name:'Voyage 3 Large',               val:0.49, color:'#533AB7'},
+];
+
+function renderClosed() {
+  const el = document.getElementById('closed-bars');
+  const max = Math.max(...CLOSED_DATA.map(d=>d.val));
+  el.innerHTML = CLOSED_DATA.map(d=>makeBar(d.name,d.val,d.color,max)).join('');
+  setTimeout(()=>{
+    el.querySelectorAll('.bar-fill').forEach(e=>{ e.style.width=e.dataset.w+'%'; });
+  },100);
+}
+
+const MUVERA_DATA = [
+  {name:'Full multi-vector (no MUVERA)', val:0.43, color:'#BA7517'},
+  {name:'MUVERA low compression',        val:0.41, color:'#EF9F27'},
+  {name:'MUVERA medium compression',     val:0.38, color:'#EF9F27'},
+  {name:'MUVERA high compression',       val:0.32, color:'#BA7517'},
+];
+
+function renderMUVERA() {
+  const el = document.getElementById('muvera-bars');
+  const max = Math.max(...MUVERA_DATA.map(d=>d.val));
+  el.innerHTML = MUVERA_DATA.map(d=>makeBar(d.name,d.val,d.color,max)).join('');
+  setTimeout(()=>{
+    el.querySelectorAll('.bar-fill').forEach(e=>{ e.style.width=e.dataset.w+'%'; });
+  },150);
+}
+
+const PIPELINE_STAGES = [
+  {icon:'📄', name:'Input', sub:'166 IR papers', detail:'<strong>3,230 pages</strong> from 166 information retrieval papers. Each page has both a <strong>rendered image</strong> (PNG) and an <strong>OCR text transcription</strong> (via GPT-4.1 OCR). This dual representation enables fair side-by-side comparison of image-based and text-based retrieval on the same content.'},
+  {icon:'🗂️', name:'Indexing', sub:'Image + text', detail:'Two parallel indexes are built: (1) <strong>Image index</strong> — each page image is embedded using ColModernVBERT (multi-vector late-interaction model) and stored in Weaviate with HNSW (ef=160). (2) <strong>Text index</strong> — OCR text is embedded using Arctic 2.0 (dense) and BM25 (sparse), also in Weaviate for hybrid search.'},
+  {icon:'🔍', name:'Retrieval', sub:'3 strategies', detail:'Three retrieval strategies are compared: <strong>Text hybrid</strong> (Arctic 2.0 + BM25 via RRF fusion), <strong>Image retrieval</strong> (ColModernVBERT multi-vector with MaxSim scoring), and <strong>Multimodal hybrid</strong> (combining normalised scores from all three: Arctic 2.0, BM25, and ColModernVBERT with α=0.5 giving weights 0.25/0.25/0.5).'},
+  {icon:'❓', name:'Queries', sub:'180 questions', detail:'<strong>180 needle-in-the-haystack questions</strong> designed to require precise retrieval — they cannot be answered from general parametric knowledge (no-retrieval baseline: only 0.16 accuracy). Questions span three types: information extraction, numerical reasoning, and logical reasoning, targeting specific methodological details in IR papers.'},
+  {icon:'🤖', name:'RAG', sub:'Reader model', detail:'Two RAG configurations: <strong>TextRAG</strong> uses hybrid text retrieval and passes OCR text to GPT-4.1 as context. <strong>ImageRAG</strong> uses ColModernVBERT to retrieve page images, which are passed directly to GPT-4.1 as visual context. Both are implemented with DSPy for structured LLM prompting. Evaluated at k=1 and k=5.'},
+  {icon:'📊', name:'Evaluation', sub:'Recall@k + QA', detail:'Retrieval evaluated by <strong>Recall@1, Recall@5, Recall@20</strong> — whether the correct gold page appears in the top-k results. QA evaluated by <strong>LLM-as-judge alignment score</strong> comparing generated answers to gold answers. Baselines include: No Retrieval, Oracle Retrieval (gold page directly), and Hard Negative (closest non-gold page).'},
+];
+
+function renderPipeline() {
+  const wrap = document.getElementById('pipeline-wrap');
+  wrap.innerHTML = PIPELINE_STAGES.map((s,i)=>`
+    <div class="pipe-node" id="pn-${i}" onclick="selectStage(${i})">
+      <div class="pn-icon">${s.icon}</div>
+      <div class="pn-name">${s.name}</div>
+      <div class="pn-sub">${s.sub}</div>
+    </div>
+    ${i<PIPELINE_STAGES.length-1?'<div class="pipe-arrow">›</div>':''}`).join('');
+}
+
+function selectStage(i) {
+  document.querySelectorAll('.pipe-node').forEach(n=>n.classList.remove('active'));
+  document.getElementById('pn-'+i).classList.add('active');
+  document.getElementById('pipeline-detail').innerHTML = PIPELINE_STAGES[i].detail;
+}
+
+const FINDINGS = [
+  {color:'#185FA5', title:'Text and image retrieval reach parity at moderate depth (Recall@5)', desc:'Both text hybrid (78%) and image ColModernVBERT (78%) achieve identical Recall@5, but diverge at Recall@1 (46% vs 43%) and Recall@20 (91% vs 93%), showing complementary failure modes.'},
+  {color:'#0F6E56', title:'Complementary failures enable multimodal hybrid to outperform both', desc:'Cases where text retrieval fails, image retrieval often succeeds (and vice versa). Multimodal fusion achieves 49% R@1, 81% R@5, 95% R@20 — the best results across all systems.'},
+  {color:'#A32D2D', title:'TextRAG substantially outperforms ImageRAG in question answering', desc:'Despite similar retrieval recall, TextRAG scores 0.62 vs 0.40 at k=1 and 0.82 vs 0.71 at k=5 — suggesting current image-based readers lose significant information vs OCR-based text.'},
+  {color:'#BA7517', title:'k=5 retrieval beats oracle single-document for both modalities', desc:'TextRAG at k=5 (0.82) exceeds oracle (0.74); ImageRAG at k=5 (0.71) exceeds its oracle (0.68). Scientific QA requires synthesising evidence across multiple pages.'},
+  {color:'#533AB7', title:'Closed-source embeddings still outperform open-source on image retrieval', desc:'Cohere Embed v4.0 and Voyage 3 Large achieve higher Recall@1 than ColModernVBERT, quantifying the current gap between proprietary and open-source visual document embeddings.'},
+  {color:'#0F6E56', title:'IRPAPERS requires precise retrieval — not general knowledge', desc:'The no-retrieval baseline scores only 0.16 alignment, confirming questions cannot be answered from parametric LLM knowledge alone. The benchmark tests genuine retrieval depth.'},
+];
+
+function renderFindings() {
+  document.getElementById('findings').innerHTML = FINDINGS.map(f=>`
+    <div class="finding" style="border-left-color:${f.color}" onclick="sendPrompt('${f.title}')">
+      <div class="finding-title">${f.title}</div>
+      <div class="finding-desc">${f.desc}</div>
+    </div>`).join('');
+}
+
+renderRecall();
+renderClosed();
+renderMUVERA();
+renderPipeline();
+renderFindings();
+</script>
