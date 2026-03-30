@@ -8,6 +8,6 @@ Interactive visualization of:
 - Text vs Image RAG
 - Benchmark insights
 
-🔗 Live Demo:
+🔗 Live Demo: https://navneetkrc.github.io/GenAI_Concepts_Infographics/
+
 https://navneetkrc.github.io/irpapers-infographic/
-https://navneetkrc.github.io/GenAI_Concepts_Infographics/
