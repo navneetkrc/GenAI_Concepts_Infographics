@@ -9,4 +9,4 @@ Interactive visualization of:
 - Benchmark insights
 
 🔗 Live Demo:
-https://your-username.github.io/irpapers-infographic/
+https://navneetkrc.github.io/irpapers-infographic/
